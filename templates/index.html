@@ -1,5 +1,27 @@
 {% extends "layout.html" %}
 
 {% block main %}
-
+<div class="calcontainer">
+    <div class="top row mx-0 justify-content-md-center p-4">
+        <div class="prev col-lg-2"><a href="/prev">&#x21D0;</a></div>
+        <div class="month col-md-auto">{{ month | upper }}</div>
+        <div class="next col-lg-2"><a href="/next">&#x21D2;</a></div>
+    </div>
+    <div class="week row mx-0">
+        {% for i in range((datew) | length) %}
+        <div class="col p-3">{{ datew[i] }}</div>
+        {% endfor %}
+    </div>
+{% for i in range((cal) | length) %}
+<div class="row mx-0">
+    {% for j in range((cal[i]) | length) %}
+        {% if cal[i][j] == 0 %}
+            <div class="days col p-3">{{ " " }}</div>
+        {% else %}
+            <div class="days col p-3">{{ cal[i][j] }}</div>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endfor %}
+</div>
 {% endblock %}

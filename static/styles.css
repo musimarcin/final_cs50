@@ -19,6 +19,11 @@ a
     text-decoration: none;
 }
 
+ul 
+{
+    list-style-type: none;
+}
+
 .logo
 {
     font-family: "Kanit", sans-serif;
@@ -30,4 +35,51 @@ a
 .logo:hover
 {
     color: white;
+}
+
+.prev
+{
+    text-align: left;
+}
+
+.next
+{
+    text-align: right;
+}
+
+.week
+{
+    font-size: 24px;
+    border-top: 3px solid black;
+    border-bottom: 2px solid black;
+    background-color: #aaaaaa;
+    color: black;
+}
+
+.week div
+{
+    border-right: 1px solid black;
+}
+
+.top
+{
+    font-size: 32px;
+    background-color: red;
+    color: #dddddd;
+}
+
+.calcontainer
+{
+    font-family: "Dosis", sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    border: 5px solid black;
+}
+
+.days
+{
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+    background-color: white;
+    color: black;
 }

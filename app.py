@@ -1,4 +1,6 @@
 import os
+import calendar
+from datetime import datetime
 
 from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
@@ -21,6 +23,11 @@ def after_request(response):
 
 @app.route("/")
 def start():
-    """ITS BASE"""
     session.clear()
-    return render_template("index.html")
+    datew = calendar.day_name
+    datey = datetime.now().year
+    datem = datetime.now().month
+    month = calendar.month_name[datem]
+    cal = calendar.monthcalendar(datey, datem)
+
+    return render_template("index.html", cal=cal, month=month, datew=datew)
