@@ -42,21 +42,20 @@ ul
     text-align: left;
 }
 
-.prev button
-{
-    border: none;
-    background: none;
-}
-
 .next
 {
     text-align: right;
 }
 
-.next button
+.top button
 {
     border: none;
     background: none;
+}
+
+.top button:hover
+{
+    color: #aaaaaa;
 }
 
 .month input
@@ -66,11 +65,12 @@ ul
     outline: none;
     pointer-events:none;
     text-align: center;
+    font-weight: 700;
 }
 
 .week
 {
-    font-size: 24px;
+    font-size: 22px;
     border-top: 3px solid black;
     border-bottom: 2px solid black;
     background-color: #aaaaaa;
@@ -103,4 +103,16 @@ ul
     border-right: 1px solid black;
     background-color: white;
     color: black;
+}
+
+.btn
+{
+    background-color: #3d8f3d;
+    border: none;
+}
+
+.user
+{
+    background-color: #aaaaaa;
+    border-radius: 15px;
 }
