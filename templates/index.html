@@ -3,10 +3,19 @@
 {% block main %}
 <div class="calcontainer">
     <div class="top row mx-0 justify-content-md-center p-4">
-        <div class="prev col-lg-2"><a href="/prev">&#x21D0;</a></div>
-        <div class="month col-md-auto">{{ month | upper }}</div>
-        <div class="next col-lg-2"><a href="/next">&#x21D2;</a></div>
+        <div class="prev col-lg-2">
+            <form action="/change" method="post">
+                <button type="submit" name="change" value="prev">&#x21D0;</button>
+            
+        </div>
+        <div class="month col-md-auto">
+            <input type="text" name="current_month" readonly value={{month|upper}}>
     </div>
+            <div class="next col-lg-2">
+                    <button type="submit" name="change" value="next">&#x21D2;</button>
+                </form>
+            </div>
+        </div>
     <div class="week row mx-0">
         {% for i in range((datew) | length) %}
         <div class="col p-3">{{ datew[i] }}</div>

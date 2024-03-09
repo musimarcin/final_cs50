@@ -42,9 +42,30 @@ ul
     text-align: left;
 }
 
+.prev button
+{
+    border: none;
+    background: none;
+}
+
 .next
 {
     text-align: right;
+}
+
+.next button
+{
+    border: none;
+    background: none;
+}
+
+.month input
+{
+    background-color: red;
+    border: none;
+    outline: none;
+    pointer-events:none;
+    text-align: center;
 }
 
 .week

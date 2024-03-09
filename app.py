@@ -31,3 +31,25 @@ def start():
     cal = calendar.monthcalendar(datey, datem)
 
     return render_template("index.html", cal=cal, month=month, datew=datew)
+
+
+@app.route("/change", methods=["GET", "POST"])
+def changep():
+    if request.method == "POST":
+        datem = datetime.now().month
+        datew = calendar.day_name
+        datey = datetime.now().year
+        current_month = request.form.get("current_month").capitalize()
+        for i in range(len(calendar.month_name)):
+            if calendar.month_name[i] == current_month:
+                if request.form["change"] == "prev" and i > 1:
+                    datem = i - 1
+                elif request.form["change"] == "next" and i < 12:
+                    datem = i + 1
+                else:
+                    return ('', 204)
+
+        month = calendar.month_name[datem]
+        cal = calendar.monthcalendar(datey, datem)
+        return render_template("index.html", cal=cal, month=month, datew=datew)
+    

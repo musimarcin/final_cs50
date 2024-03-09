@@ -11,7 +11,7 @@ for i in range(len(cal.monthcalendar(2024, 2))):
         else:
             print(cal.monthcalendar(2024, 2)[i][j])
 
-datem = calendar.month_name[2]
+datem = calendar.month_name[1]
 print(datem)
 """
     for j in cal.monthcalendar(2024, 2):
@@ -32,3 +32,9 @@ datew = calendar.day_name
 
 for i in range(len(datew)):
     print(datew[i])
+
+current_month = "December"
+
+for i in range(len(calendar.month_name)):
+    if calendar.month_name[i] == current_month:
+       print(i)
