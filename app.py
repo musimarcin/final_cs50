@@ -2,7 +2,8 @@ import os
 import calendar
 from datetime import datetime
 
-from flask import Flask, redirect, render_template, request, session
+from cs50 import SQL
+from flask import Flask, flash, redirect, render_template, request, session, url_for
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 import sqlite3
@@ -12,7 +13,7 @@ app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
-connect = sqlite3.connect('database.db')
+db = SQL("sqlite:///database.db")
 
 @app.after_request
 def after_request(response):
@@ -29,23 +30,27 @@ def login():
 
     if request.method == "POST":
         if not request.form.get("username"):
-            return apology("must provide username", 403)
+            flash("must provide username")
+            return render_template("login.html")
 
         elif not request.form.get("password"):
-            return apology("must provide password", 403)
-
-        rows = db.execute(
-            "SELECT * FROM users WHERE username = ?", request.form.get("username"))
+            flash("must provide password")
+            return render_template("login.html")
+        
+        rows = db.execute("SELECT * FROM users WHERE username = ?", request.form.get("username"))
 
         if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
-            return apology("invalid username and/or password", 403)
+            flash("invalid username and/or password")
+            return render_template("login.html")
 
         session["user_id"] = rows[0]["id"]
-
+        
+        flash("successfully logged in")
         return redirect("/")
-
+    
     else:
         return render_template("login.html")
+
     
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -56,20 +61,32 @@ def register():
     pwd2 = request.form.get("confirmation")
     if request.method == "POST":
         if not name:
-            return apology("must provide username", 400)
+            flash("must provide username")
+            return render_template("register.html")
         elif not pwd:
-            return apology("must provide password", 400)
+            flash("must provide password")
+            return render_template("register.html")
         elif not pwd2:
-            return apology("must provide password2", 400)
+            flash("must repeat a password")
+            return render_template("register.html")
         elif str(pwd) != str(pwd2):
-            return apology("passwords does not match", 400)
+            flash("passwords does not match")
+            return render_template("register.html")
         else:
             rows = db.execute("SELECT * FROM users WHERE username = ?", name)
             if len(rows) > 0:
-                return apology("user already exists", 400)
+                flash("user already exists")
+                return render_template("register.html")
             else:
                 db.execute("INSERT INTO users (username, hash) VALUES(?, ?)", name, generate_password_hash(pwd, method='pbkdf2', salt_length=16))
+                flash("successfully registered")
     return render_template("register.html")
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/")
+
 
 @app.route("/", methods=["GET", "POST"])
 def start():
@@ -103,7 +120,6 @@ def start():
                     current_year += 1
                     datey = current_year
         
-
         month = calendar.month_name[datem]
         cal = calendar.monthcalendar(datey, datem)
         return render_template("index.html", cal=cal, month=month, datew=datew, datey=datey)

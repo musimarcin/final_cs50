@@ -125,3 +125,11 @@ ul
     background-color: #aaaaaa;
     border-radius: 15px;
 }
+
+.info
+{
+    background-color: black;
+    color: white;
+    font-weight: 600;
+    border-radius: 10px;
+}
