@@ -2,22 +2,23 @@
 
 {% block main %}
 <div class="calcontainer">
-    <div class="top row mx-0 justify-content-md-center p-4">
-        <div class="prev col-2">
+    <div class="top row mx-0 justify-content-center p-3">
+        <div class="prev col-auto">
             <form action="/" method="post">
                 <button type="submit" name="change" value="prev">&#x21D0;</button>
         </div>
-        <div class="month col-md-auto">
+        <div class="month col-auto">
             <input type="text" name="current_month" readonly value={{month|upper}}>
+            <input type="text" class="current_year" name="current_year" readonly value={{datey}}>
         </div>
-        <div class="next col-2">
+        <div class="next col-auto">
                 <button type="submit" name="change" value="next">&#x21D2;</button>
             </form>
         </div>
     </div>
     <div class="week row mx-0">
         {% for i in range((datew) | length) %}
-        <div class="col p-3">{{ datew[i] }}</div>
+        <div class="col py-3 px-2">{{ datew[i] }}</div>
         {% endfor %}
     </div>
 {% for i in range((cal) | length) %}
@@ -26,7 +27,7 @@
         {% if cal[i][j] == 0 %}
             <div class="days col p-3">{{ " " }}</div>
         {% else %}
-            <div class="days col p-3">{{ cal[i][j] }}</div>
+            <input class="days col p-3" type="text" name="current_month" readonly value={{cal[i][j]}}>
         {% endif %}
     {% endfor %}
 </div>

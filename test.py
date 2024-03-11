@@ -25,16 +25,16 @@ print(datem)
         <div class="col">Friday</div>
         <div class="col">Saturday</div>
         <div class="col">Sunday</div>
-"""
 
-datew = calendar.day_name
-
-
-for i in range(len(datew)):
-    print(datew[i])
-
-current_month = "December"
+        current_month = "December"
 
 for i in range(len(calendar.month_name)):
     if calendar.month_name[i] == current_month:
        print(i)
+"""
+
+datey = datetime.now().year + 1
+
+
+print(datey)
+
