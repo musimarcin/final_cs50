@@ -82,7 +82,7 @@ def start():
     current_year = request.form.get("current_year", type=int)
     if not current_year:
         datey = datetime.now().year
-    else:
+    else: 
         datey = current_year
 
     if request.method == "POST":
