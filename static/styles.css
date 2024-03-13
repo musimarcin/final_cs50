@@ -1,5 +1,6 @@
 body
 {
+    font-family: "Dosis", sans-serif;
     background-color: #666666;
 }
 
@@ -96,7 +97,6 @@ ul
 
 .calcontainer
 {
-    font-family: "Dosis", sans-serif;
     font-weight: 600;
     font-size: 20px;
     border: 5px solid black;
@@ -120,7 +120,7 @@ ul
     border: none;
 }
 
-.user
+.formbg
 {
     background-color: #aaaaaa;
     border-radius: 15px;
@@ -132,4 +132,14 @@ ul
     color: white;
     font-weight: 600;
     border-radius: 10px;
+}
+
+.desc
+{
+    height: 200px;
+}
+
+.list
+{
+    font-weight: 600;
 }

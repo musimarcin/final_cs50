@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Manage Events
+{% endblock %}
+
+{% block main %}
+
+    {% for msg in get_flashed_messages() %}
+    <div class="d-flex justify-content-center mb-3 mx-auto">
+        <div class="info w-25 p-2">{{msg}}</div>
+    </div>
+    {% endfor %}
+
+<div class="d-flex justify-content-center">
+    <form action="/manage" method="post" class="formbg py-4 w-50">
+        <div class="list d-flex justify-content-around mb-3">
+            <div class="w-25">
+                from
+                <input class="form-control" name="fromdate" type="datetime-local" value="2000-01-01T00:00">
+            </div>
+            <div class="w-25"> 
+                to
+                <input class="form-control" name="todate" type="datetime-local" value="{{datenow}}">
+            </div>
+        </div>
+        <div class="mx-auto w-75 mb-3">
+            <input class="form-control" name="title" type="text" placeholder="Cotains title">
+        </div>
+        <div class="mx-auto w-75 mb-3">
+            <input class="form-control" name="description" type="text" placeholder="In description...">
+        </div>
+        <button class="btn btn-primary" type="submit">Submit</button>
+    </form>
+</div>
+
+<div class="d-flex justify-content-center mt-3">
+
+</div>
+
+{% endblock %}

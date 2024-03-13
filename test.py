@@ -37,6 +37,9 @@ CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, username TEXT
 CREATE TABLE history (user_id INTEGER NOT NULL, description TEXT NOT NULL, date TEXT NOT NULL, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY(user_id) REFERENCES users(id));
 
 CREATE TABLE events (user_id INTEGER NOT NULL, description TEXT NOT NULL, date TEXT NOT NULL, FOREIGN KEY(user_id) REFERENCES users(id));
+
+if date > datetime.now():
+    print("kokson")
 """
 
 datey = datetime.now().year + 1
@@ -44,3 +47,11 @@ datey = datetime.now().year + 1
 
 print(datey)
 
+now = datetime.now()
+
+parse = datetime.strptime("2025-02-27T21:33", '%Y-%m-%dT%H:%M')
+
+if now > parse:
+    print("kok")
+else:
+    print("nonkoks")
