@@ -110,8 +110,7 @@ ul
     background-color: white;
     color: black;
     text-align: center;
-    outline: none;
-    pointer-events: none;
+    font-weight: 400;
 }
 
 .btn
@@ -157,4 +156,39 @@ ul
 .list
 {
     font-weight: 600;
+}
+
+.days {
+    position: relative;
+    display: inline-block;
+}
+.days .tooltip {
+    visibility: hidden;
+    width: 120px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.days:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+.event
+{
+    font-weight: 800;
+}
+
+table
+{
+    font-weight: 600;
+    font-size: 18px;
 }

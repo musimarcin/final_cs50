@@ -1,6 +1,11 @@
 {% extends "layout.html" %}
 
 {% block main %}
+{% for msg in get_flashed_messages() %}
+<div class="d-flex justify-content-center mb-3 mx-auto">
+    <div class="info w-25 p-2">{{msg}}</div>
+</div>
+{% endfor %}
 <div class="calcontainer">
     <div class="top row mx-0 justify-content-center p-3">
         <div class="prev col-auto">
@@ -21,16 +26,22 @@
         <div class="col py-3 px-2">{{ datew[i] }}</div>
         {% endfor %}
     </div>
-{% for i in range((cal) | length) %}
-<div class="row mx-0">
-    {% for j in range((cal[i]) | length) %}
-        {% if cal[i][j] == 0 %}
-            <div class="days col p-3">{{ " " }}</div>
-        {% else %}
-            <input class="days col p-3" type="text" name="current_month" readonly value={{cal[i][j]}}>
-        {% endif %}
+    {% for i in range((cal) | length) %}
+    <div class="row mx-0">
+        {% for j in range((cal[i]) | length) %}
+            {% if cal[i][j] == 0 %}
+                <div class="days col p-3">{{ " " }}</div>
+            {% else %}
+                <div class="days col p-3">{{cal[i][j]}}
+                {% for k in table_days %}
+                    {% if cal[i][j] == k %}
+                        <div class="tooltip">{{k}}</div>
+                    {% endif %}
+                {% endfor %}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
     {% endfor %}
-</div>
-{% endfor %}
 </div>
 {% endblock %}

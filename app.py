@@ -3,7 +3,7 @@ import calendar
 from datetime import datetime
 
 from cs50 import SQL
-from flask import Flask, flash, redirect, render_template, request, session, url_for
+from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 import sqlite3
@@ -17,18 +17,11 @@ Session(app)
 db = SQL("sqlite:///database.db")
 
 def login_required(f):
-    """
-    Decorate routes to require login.
-
-    https://flask.palletsprojects.com/en/latest/patterns/viewdecorators/
-    """
-
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if session.get("user_id") is None:
             return redirect("/login")
         return f(*args, **kwargs)
-
     return decorated_function
 
 @app.after_request
@@ -48,22 +41,16 @@ def login():
         if not request.form.get("username"):
             flash("must provide username")
             return render_template("login.html")
-
         elif not request.form.get("password"):
             flash("must provide password")
             return render_template("login.html")
-        
         rows = db.execute("SELECT * FROM users WHERE username = ?", request.form.get("username"))
-
         if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
             flash("invalid username and/or password")
             return render_template("login.html")
-
         session["user_id"] = rows[0]["id"]
-        
         flash("successfully logged in")
         return redirect("/")
-    
     else:
         return render_template("login.html")
 
@@ -101,17 +88,27 @@ def register():
 @app.route("/logout")
 def logout():
     session.clear()
+    flash("successfully logged out")
     return redirect("/")
 
 
 @app.route("/", methods=["GET", "POST"])
 def start():
-
     datem = datetime.now().month
     datew = calendar.day_abbr
     datey = datetime.now().year
     month = calendar.month_name[datem]
     cal = calendar.monthcalendar(datey, datem)
+    if datem < 10:
+        todatem=datem+1
+        datemdb="0"+str(datem)
+        todatemdb="0"+str(todatem)
+    rows = db.execute("SELECT * FROM events WHERE date > ? AND date < ?", str(datey)+"-"+datemdb, str(datey)+"-"+todatemdb)
+    table_days = []
+    for row in range(len(rows)):
+        q = rows[row]['date']
+        table_days.insert(row, datetime.strptime(q, '%Y-%m-%dT%H:%M').day)
+
     current_year = request.form.get("current_year", type=int)
     if not current_year:
         datey = datetime.now().year
@@ -135,18 +132,21 @@ def start():
                     datem = 1
                     current_year += 1
                     datey = current_year
-        
+
+        for row in range(len(rows)):
+            q = rows[row]['date']
+            table_days.insert(row, datetime.strptime(q, '%Y-%m-%dT%H:%M').day)
+
         month = calendar.month_name[datem]
         cal = calendar.monthcalendar(datey, datem)
-        return render_template("index.html", cal=cal, month=month, datew=datew, datey=datey)
+        return render_template("index.html", cal=cal, month=month, datew=datew, datey=datey, table_days=table_days)
     else:
-        return render_template("index.html", cal=cal, month=month, datew=datew, datey=datey)
+        return render_template("index.html", cal=cal, month=month, datew=datew, datey=datey, table_days=table_days)
     
 
 @app.route("/add", methods=['GET', 'POST'])
 @login_required
 def add():
-
     title = request.form.get("title")
     desc = request.form.get("description")
     date = request.form.get("date")
@@ -163,8 +163,8 @@ def add():
             flash("must provide a valid date")
             return render_template("add.html")
         else:
-            db.execute("INSERT INTO events (user_id, description, date, title) VALUES (?, ?, ?, ?)", session["user_id"], desc, date, title)
-            db.execute("INSERT INTO history (user_id, description, date, title) VALUES (?, ?, ?, ?)", session["user_id"], desc, date, title)
+            db.execute("INSERT INTO events (user_id, title, description, date) VALUES (?, ?, ?, ?)", session["user_id"], title, desc, date)
+            db.execute("INSERT INTO history (user_id, title, description, date, action) VALUES (?, ?, ?, ?, ?)", session["user_id"], title, desc, date, "Added")
             flash("successfully added event")
             return render_template("add.html")
     else:
@@ -201,25 +201,42 @@ def format_datetime(value):
     return datetime.strptime(value, "%Y-%m-%dT%H:%M")
 
 @app.route("/edit", methods=['POST'])
+@login_required
 def edit():
     id = request.form['edit_btn']
     row = db.execute("SELECT * FROM events WHERE id = ?", id)[0]
     return render_template("edit.html", id=id, row=row)
 
 @app.route("/editevent", methods=['POST'])
+@login_required
 def editevent():
     id = request.form['edit_id']
     title = request.form.get("title")
     desc = request.form.get("description")
     date = request.form.get("date")
     db.execute("UPDATE events SET title = ?, description = ?, date = ? WHERE id = ?", title, desc, date, id)
+    db.execute("INSERT INTO history (user_id, title, description, date, action) VALUES (?, ?, ?, ?, ?)", session["user_id"], title, desc, date, "Edited")
+    flash("successfully edited")
     return redirect("/list")
 
 @app.route("/delete", methods=['POST'])
+@login_required
 def delete():
     id = request.form['del_btn']
+    row = db.execute("SELECT * FROM events WHERE id = ?", id)[0]
+    title = row['title']
+    desc = row['description']
+    date = row['date']
+    db.execute("INSERT INTO history (user_id, title, description, date, action) VALUES (?, ?, ?, ?, ?)", session["user_id"], title, desc, date, "Deleted")
     db.execute("DELETE FROM events WHERE id = ?", id)
+    flash("successfully deleted")
     return redirect("/list")
+
+@app.route("/history", methods=['GET'])
+@login_required
+def history():
+    rows = db.execute("SELECT * FROM history WHERE user_id = ?", session["user_id"])
+    return render_template("history.html", rows=rows)
 
 if __name__ == "__main__":
     app.run(debug=True)

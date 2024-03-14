@@ -1,18 +1,44 @@
 import calendar
 from datetime import datetime
+from cs50 import SQL
+db = SQL("sqlite:///database.db")
 
+datem = datetime.now().month
+datey = datetime.now().year
+if datem<10:
+    todatem=datem+1
+    datemdb="0"+str(datem)
+    todatemdb="0"+str(todatem)
+rows = db.execute("SELECT * FROM events WHERE date > ? AND date < ?", str(datey)+"-"+datemdb, str(datey)+"-"+todatemdb)
+table_days = {}
+rep_titles = []
+
+for row in range(len(rows)):
+    q = rows[row]['date']
+    theday = datetime.strptime(q, '%Y-%m-%dT%H:%M').day
+    if theday in table_days:
+        table_days[theday] [rows[row]['title']]
+    else: 
+        table_days[theday] = rows[row]['title']
+    #table_days.insert(row, datetime.strptime(q, '%Y-%m-%dT%H:%M').day)
 
 cal=calendar
 
-for i in range(len(cal.monthcalendar(2024, 2))):
-    for j in range(len(cal.monthcalendar(2024, 2)[i])):
-        if cal.monthcalendar(2024, 2)[i][j] == 0:
-            print(" ")
-        else:
-            print(cal.monthcalendar(2024, 2)[i][j])
+calnow=cal.monthcalendar(datey,datetime.now().month)
 
-datem = calendar.month_name[1]
-print(datem)
+for i in range(len(calnow)):
+    for j in range(len(calnow[i])):
+        if calnow[i][j] == 0:
+            #print(" ")
+            pass
+        else:
+            #print(calnow[i][j])
+            for k in table_days:
+                if calnow[i][j] == k:
+                    print(table_days[k])
+
+print(table_days)
+
 """
     for j in cal.monthcalendar(2024, 2):
         if cal.monthcalendar(2024, 2)[i][j] != 0:
@@ -34,21 +60,11 @@ for i in range(len(calendar.month_name)):
 
 CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, username TEXT NOT NULL, hash TEXT NOT NULL);
 CREATE TABLE sqlite_sequence(name,seq);
-CREATE TABLE history (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, title TEXT NOT NULL, description TEXT NOT NULL, date TEXT NOT NULL, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY(user_id) REFERENCES users(id));
+CREATE TABLE history (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, title TEXT NOT NULL, description TEXT NOT NULL, date TEXT NOT NULL, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, action TEXT NOT NULL, FOREIGN KEY(user_id) REFERENCES users(id));
 CREATE TABLE events (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, title TEXT NOT NULL, description TEXT NOT NULL, date TEXT NOT NULL, FOREIGN KEY(user_id) REFERENCES users(id));
 
 if date > datetime.now():
     print("kokson")
 """
 
-datey = datetime.now().year + 1
 
-
-print(datey)
-
-now = datetime.now()
-
-parse = datetime.strptime("2025-02-27T21:33", '%Y-%m-%dT%H:%M')
-
-print(now)
-print(parse)
