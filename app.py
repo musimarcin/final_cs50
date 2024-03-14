@@ -143,9 +143,9 @@ def start():
         return render_template("index.html", cal=cal, month=month, datew=datew, datey=datey)
     
 
-@app.route("/manage", methods=['GET', 'POST'])
+@app.route("/add", methods=['GET', 'POST'])
 @login_required
-def manage():
+def add():
 
     title = request.form.get("title")
     desc = request.form.get("description")
@@ -155,20 +155,20 @@ def manage():
         dateparsed = datetime.strptime(str(date), '%Y-%m-%dT%H:%M')
         if not title:
             flash("must provide title")
-            return render_template("manage.html")
+            return render_template("add.html")
         elif not desc:
             flash("must provide description")
-            return render_template("manage.html")
+            return render_template("add.html")
         elif not date or (dateparsed < datetime.now()):
             flash("must provide a valid date")
-            return render_template("manage.html")
+            return render_template("add.html")
         else:
             db.execute("INSERT INTO events (user_id, description, date, title) VALUES (?, ?, ?, ?)", session["user_id"], desc, date, title)
             db.execute("INSERT INTO history (user_id, description, date, title) VALUES (?, ?, ?, ?)", session["user_id"], desc, date, title)
             flash("successfully added event")
-            return render_template("manage.html")
+            return render_template("add.html")
     else:
-        return render_template("manage.html")
+        return render_template("add.html")
 
 @app.route("/list", methods=['GET', 'POST'])
 @login_required
