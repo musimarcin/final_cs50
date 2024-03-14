@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Edit Event
+{% endblock %}
+
+{% block main %}
+
+    {% for msg in get_flashed_messages() %}
+    <div class="d-flex justify-content-center mb-3 mx-auto">
+        <div class="info w-25 p-2">{{msg}}</div>
+    </div>
+    {% endfor %}
+
+<div class="d-flex justify-content-center">
+    <form action="/editevent" method="post" class="formbg py-4 w-75">
+        <div class="mb-3">
+            <input autofocus class="form-control mx-auto w-75" name="title" type="text" value={{row.title}}>
+        </div>
+        <div class="mb-3">
+            <textarea class="desc form-control mx-auto w-75" name="description" >{{row.description}}</textarea>
+        </div>
+        <div class="mb-3 mx-auto w-75">
+            <input class="form-control w-25" name="date" type="datetime-local" value="{{row.date}}">
+        </div>
+        <button class="btn btn-primary" type="submit">Edit</button>
+        <input hidden name="edit_id" value="{{row.id}}">
+    </form>
+</div>
+{% endblock %}

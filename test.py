@@ -32,11 +32,10 @@ for i in range(len(calendar.month_name)):
     if calendar.month_name[i] == current_month:
        print(i)
 
-CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, username TEXT NOT NULL, hash TEXT NOT NULL)
-
-CREATE TABLE history (user_id INTEGER NOT NULL, description TEXT NOT NULL, date TEXT NOT NULL, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY(user_id) REFERENCES users(id));
-
-CREATE TABLE events (user_id INTEGER NOT NULL, description TEXT NOT NULL, date TEXT NOT NULL, FOREIGN KEY(user_id) REFERENCES users(id));
+CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, username TEXT NOT NULL, hash TEXT NOT NULL);
+CREATE TABLE sqlite_sequence(name,seq);
+CREATE TABLE history (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, title TEXT NOT NULL, description TEXT NOT NULL, date TEXT NOT NULL, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY(user_id) REFERENCES users(id));
+CREATE TABLE events (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, title TEXT NOT NULL, description TEXT NOT NULL, date TEXT NOT NULL, FOREIGN KEY(user_id) REFERENCES users(id));
 
 if date > datetime.now():
     print("kokson")
@@ -51,7 +50,5 @@ now = datetime.now()
 
 parse = datetime.strptime("2025-02-27T21:33", '%Y-%m-%dT%H:%M')
 
-if now > parse:
-    print("kok")
-else:
-    print("nonkoks")
+print(now)
+print(parse)

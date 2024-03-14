@@ -12,16 +12,16 @@
     </div>
     {% endfor %}
 
-<div class="d-flex justify-content-center">
-    <form action="/manage" method="post" class="formbg py-4 w-50">
+<div class="d-flex justify-content-center mb-3">
+    <form action="/list" method="post" class="formbg py-4 w-50">
         <div class="list d-flex justify-content-around mb-3">
             <div class="w-25">
                 from
-                <input class="form-control" name="fromdate" type="datetime-local" value="2000-01-01T00:00">
+                <input class="form-control" name="fromdate" type="datetime-local">
             </div>
             <div class="w-25"> 
                 to
-                <input class="form-control" name="todate" type="datetime-local" value="{{datenow}}">
+                <input class="form-control" name="todate" type="datetime-local">
             </div>
         </div>
         <div class="mx-auto w-75 mb-3">
@@ -30,12 +30,38 @@
         <div class="mx-auto w-75 mb-3">
             <input class="form-control" name="description" type="text" placeholder="In description...">
         </div>
-        <button class="btn btn-primary" type="submit">Submit</button>
+        <button class="btn btn-primary" type="submit">Search</button>
     </form>
 </div>
-
-<div class="d-flex justify-content-center mt-3">
-
-</div>
-
+{% if (rows | length) > 0 %}
+<table class="table table-striped table-dark">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Description</th>
+            <th scope="col">Date</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+            {% for row in rows %}
+            <tr>
+                <td> {{ row.id }} </td>
+                <td> {{ row.title }} </td>
+                <td> {{ row.description }}                 
+                <td> {{ row.date | format_datetime }} </td>
+                <td> 
+                <form action="/edit" method="post">
+                    <button class="btnlist mb-2 p-2" name="edit_btn" value="{{row.id}}">EDIT</button>
+                </form>
+                <form action="/delete" method="post">
+                    <button class="btnlist p-2" name="del_btn" value="{{row.id}}">DELETE</button>
+                </form> 
+                </td>
+            </tr>
+            {% endfor %}
+    </tbody>
+</table>
+{% endif %}
 {% endblock %}

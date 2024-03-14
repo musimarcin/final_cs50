@@ -174,15 +174,52 @@ def manage():
 @login_required
 def list():
     datenow = datetime.now().strftime("%Y-%m-%dT%H:%M")
+    rows = db.execute("SELECT * FROM events WHERE user_id = ?", session["user_id"])
     if request.method == "POST":
-        fromdate = datetime.strptime(str(request.form.get("fromdate")), '%Y-%m-%dT%H:%M')
-        todate = datetime.strptime(str(request.form.get("todate")), '%Y-%m-%dT%H:%M')
+        fdate = request.form.get("fromdate")
+        tdate = request.form.get("todate")
+        if fdate == "" and tdate == "":
+            fromdate = "1970-01-01T00:00"
+            todate = "9999-12-31T23:59" 
+        elif fdate == "":
+            fromdate = "9999-12-31T23:59"
+        elif tdate == "":
+            todate = "9999-12-31T23:59"      
+        else:
+            fromdate = datetime.strptime(str(fdate), '%Y-%m-%dT%H:%M')
+            todate = datetime.strptime(str(tdate), '%Y-%m-%dT%H:%M')
         title = request.form.get("title")
         desc = request.form.get("description")
-        
-        return render_template("list.html", datenow=datenow)
+        rows = db.execute("SELECT * FROM events WHERE title LIKE ? AND description LIKE ? AND date >= ? AND date <= ? AND user_id = ?", "%" + title + "%", "%" + desc + "%", fromdate, todate, session["user_id"])        
+        return render_template("list.html", datenow=datenow, rows=rows)
     else:
-        return render_template("list.html", datenow=datenow)
+
+        return render_template("list.html", datenow=datenow, rows=rows)
+    
+@app.template_filter()
+def format_datetime(value):
+    return datetime.strptime(value, "%Y-%m-%dT%H:%M")
+
+@app.route("/edit", methods=['POST'])
+def edit():
+    id = request.form['edit_btn']
+    row = db.execute("SELECT * FROM events WHERE id = ?", id)[0]
+    return render_template("edit.html", id=id, row=row)
+
+@app.route("/editevent", methods=['POST'])
+def editevent():
+    id = request.form['edit_id']
+    title = request.form.get("title")
+    desc = request.form.get("description")
+    date = request.form.get("date")
+    db.execute("UPDATE events SET title = ?, description = ?, date = ? WHERE id = ?", title, desc, date, id)
+    return redirect("/list")
+
+@app.route("/delete", methods=['POST'])
+def delete():
+    id = request.form['del_btn']
+    db.execute("DELETE FROM events WHERE id = ?", id)
+    return redirect("/list")
 
 if __name__ == "__main__":
     app.run(debug=True)

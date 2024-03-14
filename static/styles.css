@@ -120,6 +120,21 @@ ul
     border: none;
 }
 
+.btnlist
+{
+    background-color: #3333aa;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    height: 40px;
+    width: 100px;
+}
+
+.btnlist:hover
+{
+    background-color: #111177;
+}
+
 .formbg
 {
     background-color: #aaaaaa;
