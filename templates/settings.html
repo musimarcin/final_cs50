@@ -26,6 +26,19 @@
                     <button class="btn btn-primary mt-2" type="submit" name="change" value="email">Change E-mail</button>
                 </div>
             </form>
+                <div class="mx-auto w-75 fw-bold mt-4">
+                    <span class="d-flex justify-content-center" style="font-size: 20px;">Account deletion</span>
+                    <button class="btn btn-primary" id="popupBtn" name="change">Delete Account</button>
+                </div>
+            <div id="popup" class="popup">
+                    <p class="mt-3">Are you sure you want to terminate your account?</p>
+                <div class="d-flex justify-content-center">
+                    <form action="/settings" method="post">
+                        <button class="btn btn-primary" name="change" value="delete">YES</button>
+                    </form>
+                    <button id="closeBtn" class="btn btn-primary">NO</button>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

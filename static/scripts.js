@@ -6,17 +6,33 @@ parent.forEach(function(parent) {
 	}
 });
 
+document.getElementById("popupBtn").addEventListener("click", function(event) {
+	document.getElementById("popup").style.display = "block";
+	event.stopPropagation(); 
+});
+
+document.getElementById("closeBtn").addEventListener("click", function() {
+	document.getElementById("popup").style.display = "none";
+});
+
+document.addEventListener("click", function(event) {
+	let popup = document.getElementById("popup");
+	if (event.target != popup && !popup.contains(event.target)) {
+		popup.style.display = "none";
+	}
+});
+
 function timer()
 {
-	var today = new Date();
+	let today = new Date();
 
-	var hour = today.getHours();
+	let hour = today.getHours();
 	if (hour<10) hour = "0"+hour;
 
-	var minute = today.getMinutes();
+	let minute = today.getMinutes();
 	if (minute<10) minute = "0"+minute;
 
-	var seconds = today.getSeconds();
+	let seconds = today.getSeconds();
 	if (seconds<10) seconds = "0"+seconds;
 
 	document.getElementById("clock").innerHTML = hour+":"+minute+":"+seconds;
