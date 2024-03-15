@@ -1,5 +1,7 @@
 {% extends "layout.html" %}
-
+{% block user %}
+    {{ mainusername }}
+{% endblock %}
 {% block main %}
 {% for msg in get_flashed_messages() %}
 <div class="d-flex justify-content-center mb-3 mx-auto">
@@ -10,14 +12,14 @@
     <div class="top row mx-0 justify-content-center p-3">
         <div class="prev col-auto">
             <form action="/" method="post">
-                <button type="submit" name="change" value="prev">&#x21D0;</button>
+                <button type="submit" name="change" value="prev"><i class="bi bi-arrow-left-square"></i></button>
         </div>
         <div class="month col-auto">
             <input type="text" name="current_month" readonly value={{month|upper}}>
             <input type="text" class="current_year" name="current_year" readonly value={{datey}}>
         </div>
         <div class="next col-auto">
-                <button type="submit" name="change" value="next">&#x21D2;</button>
+                <button type="submit" name="change" value="next"><i class="bi bi-arrow-right-square"></i></button>
             </form>
         </div>
     </div>
@@ -33,9 +35,9 @@
                 <div class="days col p-3">{{ " " }}</div>
             {% else %}
                 <div class="days col p-3">{{cal[i][j]}}
-                {% for k in table_days %}
+                {% for k, v in table_days.items() %}
                     {% if cal[i][j] == k %}
-                        <div class="tooltip">{{k}}</div>
+                        <div class="tooltip">{{v}}</div>
                     {% endif %}
                 {% endfor %}
                 </div>

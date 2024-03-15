@@ -1,8 +1,5 @@
 {% extends "layout.html" %}
 
-{% block title %}
-    Register
-{% endblock %}
 
 {% block main %}
     {% for msg in get_flashed_messages() %}
@@ -20,6 +17,9 @@
         </div>
         <div class="mb-3">
             <input class="form-control mx-auto w-auto" name="confirmation" placeholder="Password" type="password">
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" name="email" placeholder="E-mail" type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
         </div>
         <button class="btn btn-primary" type="submit">Register</button>
     </form>

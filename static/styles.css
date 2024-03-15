@@ -25,7 +25,7 @@ ul
     list-style-type: none;
 }
 
-.logo
+.logo, .logo2
 {
     font-family: "Kanit", sans-serif;
     color: black;
@@ -33,7 +33,7 @@ ul
     font-size: 18px;
 }
 
-.logo:hover
+.logo2:hover
 {
     color: white;
 }
@@ -158,11 +158,14 @@ ul
     font-weight: 600;
 }
 
-.days {
+.days 
+{
     position: relative;
     display: inline-block;
 }
-.days .tooltip {
+
+.days .tooltip 
+{
     visibility: hidden;
     width: 120px;
     background-color: #555;
@@ -176,15 +179,14 @@ ul
     margin-left: -60px;
     opacity: 0;
     transition: opacity 0.3s;
-}
-.days:hover .tooltip {
-    visibility: visible;
-    opacity: 1;
+    font-style: italic;
+    font-size: 18px;
 }
 
-.event
+.days:hover .tooltip 
 {
-    font-weight: 800;
+    visibility: visible;
+    opacity: 1;
 }
 
 table

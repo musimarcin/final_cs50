@@ -3,24 +3,28 @@ from datetime import datetime
 from cs50 import SQL
 db = SQL("sqlite:///database.db")
 
-datem = datetime.now().month
+datem = datetime.now().month-1
 datey = datetime.now().year
-if datem<10:
-    todatem=datem+1
+print(datem)
+if datem < 10:
+    todatem=datem+2
     datemdb="0"+str(datem)
-    todatemdb="0"+str(todatem)
+    if todatem < 10:
+        todatemdb = "0" + str(todatem)
+    else:
+        todatemdb=todatem
 rows = db.execute("SELECT * FROM events WHERE date > ? AND date < ?", str(datey)+"-"+datemdb, str(datey)+"-"+todatemdb)
 table_days = {}
-rep_titles = []
 
 for row in range(len(rows)):
     q = rows[row]['date']
     theday = datetime.strptime(q, '%Y-%m-%dT%H:%M').day
     if theday in table_days:
-        table_days[theday] [rows[row]['title']]
+        if not isinstance(table_days[theday], list):
+            table_days[theday] = [table_days[theday]]
+        table_days[theday].append(rows[row]['title'])
     else: 
         table_days[theday] = rows[row]['title']
-    #table_days.insert(row, datetime.strptime(q, '%Y-%m-%dT%H:%M').day)
 
 cal=calendar
 
@@ -35,8 +39,10 @@ for i in range(len(calnow)):
             #print(calnow[i][j])
             for k in table_days:
                 if calnow[i][j] == k:
-                    print(table_days[k])
+                    pass
+                    #print(table_days[k])
 
+print(rows)
 print(table_days)
 
 """

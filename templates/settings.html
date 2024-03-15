@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block user %}
+    {{ mainusername }}
+{% endblock %}
+
+{% block main %}
+    {% for msg in get_flashed_messages() %}
+        <div class="d-flex justify-content-center mb-3 mx-auto">
+            <div class="info w-25 p-2">{{msg}}</div>
+        </div>
+    {% endfor %}
+    <div class="d-flex justify-content-center mb-3">
+        <div class="formbg py-4 w-50">
+            <form action="/settings" method="post">
+                <div class="mx-auto w-75 mb-3 fw-bold">
+                    <span style="font-size: 20px;">Password</span>
+                    <input class="form-control" name="password" type="password" placeholder="New password">
+                    <button class="btn btn-primary mt-2" type="submit" name="change" value="password">Change Password</button>
+                </div>
+            </form>
+            <form action="/settings" method="post">
+                <div class="mx-auto w-75 mb-3 fw-bold">
+                    <span style="font-size: 20px;">E-mail</span>
+                    <input class="form-control" name="email" type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" value={{email}}>
+                    <button class="btn btn-primary mt-2" type="submit" name="change" value="email">Change E-mail</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

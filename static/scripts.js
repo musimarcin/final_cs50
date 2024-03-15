@@ -2,7 +2,7 @@ let parent = document.querySelectorAll(".days");
 
 parent.forEach(function(parent) {
 	if (parent.querySelector(".tooltip")) {
-		parent.classList.add("event")
+		parent.classList.add("fw-bold")
 	}
 });
 
