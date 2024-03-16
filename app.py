@@ -248,15 +248,13 @@ def list():
     if request.method == "POST":
         fdate = request.form.get("fromdate")
         tdate = request.form.get("todate")
-        if fdate == "" and tdate == "":
+        if fdate == "":
             fromdate = "1970-01-01T00:00"
-            todate = "9999-12-31T23:59" 
-        elif fdate == "":
-            fromdate = "9999-12-31T23:59"
-        elif tdate == "":
-            todate = "9999-12-31T23:59"      
         else:
             fromdate = datetime.strptime(str(fdate), '%Y-%m-%dT%H:%M')
+        if tdate == "":
+            todate = "9999-12-31T23:59"
+        else:
             todate = datetime.strptime(str(tdate), '%Y-%m-%dT%H:%M')
         title = request.form.get("title")
         desc = request.form.get("description")
