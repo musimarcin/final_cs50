@@ -22,6 +22,8 @@ document.addEventListener("click", function(event) {
 	}
 });
 
+
+
 function timer()
 {
 	let today = new Date();
@@ -36,6 +38,7 @@ function timer()
 	if (seconds<10) seconds = "0"+seconds;
 
 	document.getElementById("clock").innerHTML = hour+":"+minute+":"+seconds;
-
+	
 	setTimeout("timer()",1000);
-}
+};
+
