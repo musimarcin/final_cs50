@@ -302,16 +302,6 @@ def editevent():
         db.execute("INSERT INTO history (user_id, title, description, date, action) VALUES (?, ?, ?, ?, ?)", session["user_id"], title, desc, date, "Edited")
         flash("successfully edited")
         return redirect("/list")
-    """""
-    id = request.form['edit_id']
-    title = request.form.get("title")
-    desc = request.form.get("description")
-    date = request.form.get("date")
-    db.execute("UPDATE events SET title = ?, description = ?, date = ? WHERE id = ? AND user_id = ?", title, desc, date, id, session["user_id"])
-    db.execute("INSERT INTO history (user_id, title, description, date, action) VALUES (?, ?, ?, ?, ?)", session["user_id"], title, desc, date, "Edited")
-    flash("successfully edited")
-    return redirect("/list")
-    """""
 
 @app.route("/delete", methods=['POST'])
 @login_required
