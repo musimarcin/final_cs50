@@ -6,17 +6,28 @@ parent.forEach(function(parent) {
 	}
 });
 
-document.getElementById("popupBtn").addEventListener("click", function(event) {
-	document.getElementById("popup").style.display = "block";
-	event.stopPropagation(); 
-});
+let popupbtn = document.querySelectorAll(".popupBtn");
+let popup = document.querySelector(".popup");
+let closebtn = document.querySelectorAll(".closeBtn");
 
-document.getElementById("closeBtn").addEventListener("click", function() {
-	document.getElementById("popup").style.display = "none";
-});
+popupbtn.forEach(e => 
+	{
+	e.addEventListener("click", function(event) 
+		{
+			popup.style.display = "block";
+			event.stopPropagation(); 
+		})
+	});
+
+closebtn.forEach(e => 
+	{
+	e.addEventListener("click", function() 
+		{
+			popup.style.display = "none";
+		});
+	})
 
 document.addEventListener("click", function(event) {
-	let popup = document.getElementById("popup");
 	if (event.target != popup && !popup.contains(event.target)) {
 		popup.style.display = "none";
 	}

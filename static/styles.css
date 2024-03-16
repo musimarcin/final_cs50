@@ -210,13 +210,13 @@ table
     font-size: 22px;
 }
 
-#closeBtn
+.closeBtn
 {
     background-color: red;
     margin-left: 0.5rem;
 }
 
-#closeBtn:hover
+.closeBtn:hover
 {
     background-color: #aa0000;
 }

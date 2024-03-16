@@ -97,9 +97,9 @@ def register():
                 flash("user or email already exists")
                 return render_template("register.html")
             else:                
-                msg = Message("Thank you for registering ", sender="example@gmail.com", recipients=[email])
-                msg.body = 'Hello Flask message sent from Flask-Mail'
-                mail.send(msg)
+                #msg = Message("Thank you for registering ", sender="example@gmail.com", recipients=[email])
+                #msg.body = 'Hello Flask message sent from Flask-Mail'
+                #mail.send(msg)
                 db.execute("INSERT INTO users (username, hash, email) VALUES(?, ?, ?)", name, generate_password_hash(pwd, method='pbkdf2', salt_length=16), email)
                 flash("successfully registered")
                 return redirect("/")
