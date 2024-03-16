@@ -221,3 +221,7 @@ table
     background-color: #aa0000;
 }
 
+#clock
+{
+    font-size: 24px;
+}

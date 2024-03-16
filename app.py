@@ -10,20 +10,19 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from functools import wraps
 
 app = Flask(__name__)
-mail = Mail(app)
 
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
-app.config['MAIL_SERVER']= 'smtp.server.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USERNAME'] = 'mail@mail.com'
-app.config['MAIL_PASSWORD'] = 'secretpassword'
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USE_SSL'] = False
+app.config['MAIL_SERVER']= 'poczta.interia.pl'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'tmyapp20@interia.eu'
+app.config['MAIL_PASSWORD'] = 'tMYapp@)0220'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
 app.config['TESTING'] = False
 app.config['MAIL_SUPPRESS_SEND'] = False
-#app.config['MAIL_DEBUG'] = True
+app.config['MAIL_DEBUG'] = True
 mail = Mail(app) 
 db = SQL("sqlite:///database.db")
 
@@ -98,9 +97,9 @@ def register():
                 flash("user or email already exists")
                 return render_template("register.html")
             else:                
-                #msg = Message("Thank you for registering", sender="mail@mail.com", recipients=[email])
-                #msg.body = 'Hello Flask message sent from Flask-Mail'
-                #mail.send(msg)
+                msg = Message("Thank you for registering ", sender="tmyapp20@interia.eu", recipients=[email])
+                msg.body = 'Hello Flask message sent from Flask-Mail'
+                mail.send(msg)
                 db.execute("INSERT INTO users (username, hash, email) VALUES(?, ?, ?)", name, generate_password_hash(pwd, method='pbkdf2', salt_length=16), email)
                 flash("successfully registered")
                 return redirect("/")
@@ -172,6 +171,12 @@ def start():
                     datem = 1
                     current_year += 1
                     datey = current_year
+                elif request.form["change"] == "nextyear":
+                    datem = i
+                    datey = current_year + 1
+                elif request.form["change"] == "prevyear":
+                    datem = i
+                    datey = current_year - 1
 
         table_days = {}
 
@@ -276,14 +281,37 @@ def edit():
 @app.route("/editevent", methods=['POST'])
 @login_required
 def editevent():
+    mainusername = db.execute("SELECT username FROM users WHERE id = ?", session["user_id"])[0]["username"]
     id = request.form['edit_id']
     title = request.form.get("title")
     desc = request.form.get("description")
     date = request.form.get("date")
-    db.execute("UPDATE events SET title = ?, description = ?, date = ? WHERE id = ?", title, desc, date, id)
+
+    dateparsed = datetime.strptime(str(date), '%Y-%m-%dT%H:%M')
+    if not title:
+        flash("must provide title")
+        return redirect("/list")
+    elif not desc:
+        flash("must provide description")
+        return redirect("/list")
+    elif not date or (dateparsed < datetime.now()):
+        flash("must provide a valid date")
+        return redirect("/list")
+    else:
+        db.execute("UPDATE events SET title = ?, description = ?, date = ? WHERE id = ? AND user_id = ?", title, desc, date, id, session["user_id"])
+        db.execute("INSERT INTO history (user_id, title, description, date, action) VALUES (?, ?, ?, ?, ?)", session["user_id"], title, desc, date, "Edited")
+        flash("successfully edited")
+        return redirect("/list")
+    """""
+    id = request.form['edit_id']
+    title = request.form.get("title")
+    desc = request.form.get("description")
+    date = request.form.get("date")
+    db.execute("UPDATE events SET title = ?, description = ?, date = ? WHERE id = ? AND user_id = ?", title, desc, date, id, session["user_id"])
     db.execute("INSERT INTO history (user_id, title, description, date, action) VALUES (?, ?, ?, ?, ?)", session["user_id"], title, desc, date, "Edited")
     flash("successfully edited")
     return redirect("/list")
+    """""
 
 @app.route("/delete", methods=['POST'])
 @login_required

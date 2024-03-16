@@ -15,13 +15,13 @@
 <div class="d-flex justify-content-center">
     <form action="/add" method="post" class="formbg py-4 w-75">
         <div class="mb-3">
-            <input autofocus class="form-control mx-auto w-75" name="title" placeholder="Title" type="text">
+            <input autofocus class="form-control mx-auto w-75" name="title" placeholder="Title" type="text" required>
         </div>
         <div class="mb-3">
-            <textarea class="desc form-control mx-auto w-75" name="description" placeholder="Describe what the event is about"></textarea>
+            <textarea class="desc form-control mx-auto w-75" name="description" placeholder="Describe what the event is about" required></textarea>
         </div>
         <div class="mb-3 mx-auto w-75">
-            <input class="form-control w-25" name="date" type="datetime-local">
+            <input class="form-control w-25" name="date" type="datetime-local" required>
         </div>
         <button class="btn btn-primary" type="submit">Register</button>
     </form>

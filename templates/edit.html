@@ -15,13 +15,13 @@
 <div class="d-flex justify-content-center">
     <form action="/editevent" method="post" class="formbg py-4 w-75">
         <div class="mb-3">
-            <input autofocus class="form-control mx-auto w-75" name="title" type="text" value={{row.title}}>
+            <input autofocus class="form-control mx-auto w-75" name="title" type="text" value={{row.title}} required>
         </div>
         <div class="mb-3">
-            <textarea class="desc form-control mx-auto w-75" name="description" >{{row.description}}</textarea>
+            <textarea class="desc form-control mx-auto w-75" name="description" required>{{row.description}}</textarea>
         </div>
         <div class="mb-3 mx-auto w-75">
-            <input class="form-control w-25" name="date" type="datetime-local" value="{{row.date}}">
+            <input class="form-control w-25" name="date" type="datetime-local" value="{{row.date}}" required>
         </div>
         <button class="btn btn-primary" type="submit">Edit</button>
         <input hidden name="edit_id" value="{{row.id}}">

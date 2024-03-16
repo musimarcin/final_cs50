@@ -23,7 +23,6 @@ document.addEventListener("click", function(event) {
 });
 
 
-
 function timer()
 {
 	let today = new Date();
