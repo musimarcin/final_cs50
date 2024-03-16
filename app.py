@@ -14,10 +14,10 @@ app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
-app.config['MAIL_SERVER']= 'poczta.interia.pl'
+app.config['MAIL_SERVER']= 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = 'tmyapp20@interia.eu'
-app.config['MAIL_PASSWORD'] = 'tMYapp@)0220'
+app.config['MAIL_USERNAME'] = 'example@gmail.com'
+app.config['MAIL_PASSWORD'] = '***'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 app.config['TESTING'] = False
@@ -97,7 +97,7 @@ def register():
                 flash("user or email already exists")
                 return render_template("register.html")
             else:                
-                msg = Message("Thank you for registering ", sender="tmyapp20@interia.eu", recipients=[email])
+                msg = Message("Thank you for registering ", sender="example@gmail.com", recipients=[email])
                 msg.body = 'Hello Flask message sent from Flask-Mail'
                 mail.send(msg)
                 db.execute("INSERT INTO users (username, hash, email) VALUES(?, ?, ?)", name, generate_password_hash(pwd, method='pbkdf2', salt_length=16), email)
